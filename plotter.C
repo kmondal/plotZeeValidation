@@ -13,9 +13,9 @@
 #include <string>
 #include <vector>
 #include <sstream>
-
-float idmvaShift = 0.03;
-float sigmaEScale = 0.05; // relative 5%
+using std::ifstream;
+float idmvaShift = 0.04; //0.03 in Moriond;
+float sigmaEScale = 0.05; //0.05; // relative 5%
 
 std::vector<std::pair<std::string, int> > samples;
 
@@ -36,8 +36,10 @@ struct HistoDefinition {
 };
 
 TFile* weights;
-TH1F* r9WeightEB, *r9WeightEE, *ptWeight;
+TFile* nVtxweights;
+TH1F *r9WeightEB, *r9WeightEE, *ptWeight, *nvtxweight;
 bool firstTime = true;
+bool isOpen = true;
 float getWeights(float r9, float eta, float pt) {  
     
   if (firstTime) {
@@ -62,6 +64,28 @@ float getWeights(float r9, float eta, float pt) {
     }
   }
 }
+float getVtxWeights(int nvtx) {  
+    
+  if (isOpen) {
+    isOpen = false;
+    nVtxweights = TFile::Open("nVertexWeight.root");
+
+    nvtxweight   = (TH1F*)nVtxweights->Get("nvtxweight");
+  }
+
+  if (nvtx > 0) {
+    int bin = nvtxweight->FindBin(nvtx);
+    return nvtxweight->GetBinContent(bin);
+  } //else {
+    //if (fabs(eta)<1.479) {
+    //  int bin = r9WeightEB->FindBin(r9);
+    //  return r9WeightEB->GetBinContent(bin);
+    //} else {
+    //  int bin = r9WeightEE->FindBin(r9);
+    //  return r9WeightEE->GetBinContent(bin);
+    //}
+  //}
+}
   
 class HistoContainer {
 public:
@@ -73,43 +97,25 @@ public:
   //int categories;
 };
 
-void readTransformations(std::vector<TGraph*>& graphs, const std::string &transformationFile) {
-  // const string transformationFile = "transformationIDMVA_final.root";
-
-  std::cout << "reading transformations from " << transformationFile << std::endl;
-  TFile* fInput = TFile::Open(transformationFile.c_str());
-  if (fInput == NULL || ! fInput->IsOpen())
-  {
-    std::cerr << "failed to open transformation file " << transformationFile << ", exiting." << std::endl;
-    exit(1);
-  }
-
-  std::vector<string> graphNames = {
-    "trasfhebdown",
-    "trasfheedown",
-    "trasfhebup",
-    "trasfheeup",
-  };
-
-  for (const string& graphName : graphNames)
-  {
-    TGraph *graph = (TGraph*)fInput->Get(graphName.c_str());
-    if (graph == NULL)
-    {
-      std::cerr << "failed to find graph '" << graphName << "' in file " << transformationFile << ", exiting." << std::endl;
-      exit(1);
-    }
-  } // loop over graphs
+void readTransformations(std::vector<TGraph*>& graphs) {
+  TFile* fInput = TFile::Open("transformationIDMVA_v2.root");
+  std::cout << "reading transformations file " << std::endl;
+  graphs.push_back((TGraph*)fInput->Get("trasfhebdown"));
+  graphs.push_back((TGraph*)fInput->Get("trasfheedown"));
+  graphs.push_back((TGraph*)fInput->Get("trasfhebup"));
+  graphs.push_back((TGraph*)fInput->Get("trasfheeup"));
   fInput->Close();
 }
 
-/** @param correctIDMVA is for correcting idmvatop1/2 and idvmvabottom1/2 */
 void plotter(const char* datafilename, const char* mcfilename, const char *idmvaCorrectionFile = NULL) {
 
   // READ Transformations
   std::vector<TGraph*> graphs;
-  if (idmvaCorrectionFile != NULL)
-    readTransformations(graphs, idmvaCorrectionFile);
+  if (idmvaCorrectionFile != NULL) readTransformations(graphs);
+    //readTransformations(graphs, idmvaCorrectionFile);
+
+  //std::vector<TGraph*> graphs;
+  //readTransformations(graphs);
   
   // READ SAMPLES
   ifstream myReadFile;
@@ -128,16 +134,19 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
     }
   }
   myReadFile.close();
+  std::cout<< "Debug level 1" << std::endl; 
   
   //std::string weight = "weight";
-
+  
   for (int sampletype=0; sampletype<2; sampletype++) {
     
     TChain* chain = new TChain("diphotonDumper/trees/zeevalidation_13TeV_All");
-    if (sampletype == 0) {
+    if (sampletype == 0)
       chain->Add(datafilename);
-    } else
+      //chain->Add("output_data_double.root/diphotonDumper/trees/zeevalidation_13TeV_All");
+    else
       chain->Add(mcfilename);
+      //chain->Add("output_mc_double.root/diphotonDumper/trees/zeevalidation_13TeV_All");
     
     TBranchesI branchesI;
     TBranchesF branchesF;
@@ -147,11 +156,11 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
     
     auto leafList = chain->GetListOfLeaves();
     for (auto leaf : *leafList) {
-      std::string name = ((TLeaf*)leaf)->GetName();
+      std::string name =((TLeaf*)leaf)->GetName();
       std::string type = ((TLeaf*)leaf)->GetTypeName();
       
-      //std::cout << type << endl;
-      if (type == "Int_t") {
+      std::cout << name << type << endl;
+            if (type == "Int_t") {
 	Int_t a = 0;
 	branchesI[name] = a;
 	chain->SetBranchAddress(name.c_str(), &(branchesI[name]));
@@ -171,8 +180,10 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
 	UChar_t a = 0;
 	branchesUC[name] = a;
 	chain->SetBranchAddress(name.c_str(), &(branchesUC[name]));
-      }
+	}
+	    //std::cout<< "Debug level 1.1" << std::endl; 
     }
+    //std::cout<< "Debug level 2" << std::endl; 
     
     std::map<int, std::vector<TTreeFormula*> > categories;
     std::cout << "Reading categories...." << std::endl;
@@ -193,11 +204,13 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
       }
     }
     myReadFile.close();
+    //std::cout<< "Debug level 3" << std::endl; 
+
     
     std::vector<HistoDefinition> histoDef;
     // READING PLOT DEFINITION
     std::cout << "Reading plots..." << std::endl;
-    myReadFile.open("plotvariables.dat");
+    myReadFile.open("plotvariables_AN.dat");
     std::map<int, HistoContainer> histos;
     histos[samples[sampletype].second] = HistoContainer();
     
@@ -220,26 +233,26 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
 	std::string name = temp.name + "_cat"+ convert.str() + "_" + samples[sampletype].first;  
 	std::cout << c << " " << name << std::endl;
 	histos[samples[sampletype].second].histoF[temp.name].push_back(*((TH1F*)h->Clone(name.c_str())));
-	//}
-	//}
       }
       delete h;
     }
     myReadFile.close();
+    std::cout<< "Debug level 4 " << chain->GetEntries() << std::endl; 
 
     for (int z=0; z<chain->GetEntries(); z++) {
-      if ((z+1)%10000 == 0)
-	std::cout << "processing entry " << z + 1 << "/" << chain->GetEntries()
-		  << std::endl;
+      if (z%10000 == 0)
+	std::cout << z << std::endl;
       
       chain->GetEntry(z);
       float mass = branchesF["mass"];
-      if ((mass > 70 && mass < 110) && (branchesF["subIDMVA"]>-0.9 && branchesF["leadIDMVA"]>-0.9)) {
+      if ((mass > 86 && mass < 94) && (branchesF["subIDMVA"]>-0.9 && branchesF["leadIDMVA"]>-0.9)) {
 	
 	float weight = 1; 
-	if (sampletype == 1)
-	  weight = branchesF["weight"]; // *getWeights(0, 0, branchesF["diphopt"]);   // REACTIVATE TO MAKE pT reweighing
-	
+	if (sampletype == 1) {
+	  //weight = getWeights(0, 0, branchesF["dipho_pt"])*getVtxWeights(branchesI["nvtx"]);//*branchesF["weight"];
+	  weight = branchesF["weight"];
+	  //std::cout << "weight" << weight << branchesF["weight"] << "   " <<getWeights(0, 0, branchesF["dipho_pt"]) << "  "<< getVtxWeights(branchesI["nvtx"])  <<  std::endl;
+	}  
 	for (unsigned int s=0; s<samples.size(); s++) {
 	  for (unsigned int h=0; h<histoDef.size(); h++) {
 	    //std::cout << histoDef[h].name << " " << histoDef[h].var << " " << histoDef[h].ncat << std::endl;
@@ -248,29 +261,32 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
 	    int category = histoDef[h].ncat;
 	    
 	    float final_weight = weight;
-
+	    
 	    for (unsigned int cat=0; cat<categories[category].size(); cat++) {
 	      categories[category][cat]->UpdateFormulaLeaves();
-
+	      //std::cout<< "Going to draw histogram " << name <<std::endl;
+	      
 	      if (categories[category][cat]->EvalInstance()) {
 		if (name == "idmvaup1" || name == "idmvaup2")
  		  histos[samples[sampletype].second].histoF[name][cat].Fill(branchesF[var]+idmvaShift, final_weight);
 		else if (name == "idmvadown1" || name == "idmvadown2")  
  		  histos[samples[sampletype].second].histoF[name][cat].Fill(branchesF[var]-idmvaShift, final_weight);
 		else if (name == "idmvatop1" || name == "idmvatop2")
-		{
+		  {
 		  if (idmvaCorrectionFile != NULL)
-                  {
-		    histos[samples[sampletype].second].histoF[name][cat].Fill(graphs[cat+2]->Eval(branchesF[var]), final_weight*graphs[cat+2]->Eval(9999));
+		    {
+
+		      if(cat == 0 || cat == 1){ histos[samples[sampletype].second].histoF[name][cat].Fill(graphs[cat+2]->Eval(branchesF[var]), final_weight*graphs[cat+2]->Eval(9999));}
+		    }
 		  }
-		}
 		else if (name == "idmvabottom1" || name == "idmvabottom2")
-		{
-		  if (idmvaCorrectionFile != NULL)
-                  {
-		    histos[samples[sampletype].second].histoF[name][cat].Fill(graphs[cat]->Eval(branchesF[var]), final_weight*graphs[cat]->Eval(9999));
+		  {
+		    if (idmvaCorrectionFile != NULL)
+		      {
+			if(cat == 0 || cat == 1){ histos[samples[sampletype].second].histoF[name][cat].Fill(graphs[cat]->Eval(branchesF[var]), final_weight*graphs[cat]->Eval(9999));}
+		      }
+
 		  }
-		}
 		else if (name == "sigmaEoEup1" || name == "sigmaEoEup2")
  		  histos[samples[sampletype].second].histoF[name][cat].Fill(branchesF[var]*(1+sigmaEScale), final_weight);
 		else if (name == "sigmaEoEdown1" || name == "sigmaEoEdown2")  
@@ -280,12 +296,18 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
 		else if (branchesI.find(var) != branchesI.end())
 		  histos[samples[sampletype].second].histoF[name][cat].Fill(branchesI[var], final_weight);
 	      }	    
+	      //std::cout<< "histo " << name << " drawn" << std::endl;
+	      //std::cout<< "Debug level 5 " << z << " " << s << " " << h << " " << " " << cat << std::endl; 
 	    }
+	    //std::cout << "Debug level 6" << std::endl;
 	  }
-    
+	  //std::cout << "Debug level 7" << std::endl;
 	  break;
 	}
+	//std::cout << "Debug level 8" << std::endl;	
       }
+      //std::cout << "Debug level 9" << std::endl;
+      //if(z==100000) break ;
     }
     
     std::cout << sampletype << std::endl;
@@ -301,9 +323,9 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
       for (int c=0; c<cat; c++) {
 	histos[samples[sampletype].second].histoF[var][c].Write();
       }
+      //std::cout << "Wrote histo successfully" << var << std::endl; 
     }
     
     out->Close();
-    cout << "wrote " << rootOutputFile << endl;
   }
 }

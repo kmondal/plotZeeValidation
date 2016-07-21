@@ -22,6 +22,8 @@ ROOT.myColorB3 = ROOT.TColor.GetColor("#f7baba")
 ROOT.myColorB3tr = ROOT.TColor.GetColor("#f7babb")
 ROOT.gROOT.GetColor(ROOT.myColorB3tr).SetAlpha(0.5)
 ROOT.myColorB4 = ROOT.TColor.GetColor("#f29191")    
+
+ROOT.myColorB5 = ROOT.TColor.GetColor("#FBDDDD")
 ci = 1756
 myNewColor = ROOT.TColor(ci, 1.0, 0., 0., "", 0.5)
 ci2 = 1974
@@ -132,9 +134,10 @@ def plotRatio(cat, data, mc, mc_top, mc_bottom, passMVAcut, equalArea):
     #    print ratio_syst[-1].GetBinContent(i), ratio_syst_up[-1].GetBinContent(i),ratio_syst_down[-1].GetBinContent(i)
     
     ratio[-1].Draw("e")
-    ratio[-1].GetYaxis().SetRangeUser(0.5, 1.5)
+    ratio[-1].GetYaxis().SetRangeUser(0.1, 1.9)
     ratio_graphs.append(ROOT.TGraphAsymmErrors(len(x), x, y, exd, exu, eyd, eyu))
-    ratio_graphs[-1].SetFillColor(ROOT.myColorB3tr)
+    ratio_graphs[-1].SetFillColor(ROOT.myColorB5) #gouranga
+    ratio_graphs[-1].SetFillStyle(3001)
     ratio_graphs[-1].SetLineColor(ROOT.myColorB3tr)
     ratio_graphs[-1].Draw("e2,same")
     ratio_syst_up[-1].SetLineColor(ROOT.myColorB2)
@@ -215,7 +218,7 @@ def plotDataMC(cat, data, mc, mc_top, mc_bottom, passMVAcut, equalArea, xaxis, n
     graphs.append(ROOT.TGraphAsymmErrors(len(x), x, y, exd, exu, eyd, eyu))
     graphs[-1].SetFillColor(ROOT.myColorB3tr)
     if (options.TeV == 8):
-        legends.append(ROOT.TLegend(.60,.60,.85,.85))
+        legends.append(ROOT.TLegend(.20,.65,.40,.85)) #.60,.60,.85,.85
     else:
         legends.append(ROOT.TLegend(.15,.65,.40,.85))
     legends[-1].SetBorderSize(0);
@@ -238,8 +241,11 @@ def plotDataMC(cat, data, mc, mc_top, mc_bottom, passMVAcut, equalArea, xaxis, n
     
     data[cat].GetYaxis().SetTitle("Events/0.02")
     mc_temp[-1].Draw("hist,same")
+    graphs[-1].SetFillColor(ROOT.myColorB5) #gouranga
+    graphs[-1].SetFillStyle(3001)
     graphs[-1].Draw("e2,same")
     hist_syst_up[-1].SetLineColor(ROOT.kRed)
+    #hist_syst_up[-1].SetFillColor(5) # gouranga
     hist_syst_down[-1].SetLineColor(2)
     hist_syst_up[-1].Draw("hist,same")
     hist_syst_down[-1].Draw("hist,same")
@@ -258,8 +264,8 @@ mc_bottom = []
 #             "pho2_phoidMva_EB_nvtxlt15_cat0", "pho2_phoidMva_EE_nvtxlt15_cat0"]
 
 
-prefixes_data = ["idmva1_cat0_DoubleEG", "idmva2_cat0_DoubleEG"]
-prefixes_mc   = ["idmva1_cat0_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8", "idmva2_cat0_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8"]
+prefixes_data = ["idmva1_cat0_SingleElectron", "idmva2_cat0_SingleElectron"]
+prefixes_mc   = ["idmva1_cat0_DYToEE", "idmva2_cat0_DYToEE"]
 
 
 fData.cd()
@@ -301,7 +307,7 @@ pad1.Draw()
 pad1.cd()
 plotDataMC(0, data, mc, mc_top, mc_bottom, False, True, xaxis, True, True)
 pad1.GetPrimitive(data[-1].GetName()).SetLabelSize(0)
-pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 130.)
+pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 245.) #gouranga
 pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetLabelSize(0.035)
 pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetTitleOffset(1)
 pad1.GetPrimitive(data[-1].GetName()).GetXaxis().SetTitleSize(0)
@@ -314,7 +320,7 @@ txt1[-1].SetTextSize(0.05)
 if (options.TeV == 8):
     txt2.DrawLatex(0.08, 0.91, "#scale[0.5]{#times10^{3}}")
     txt1[-1].DrawLatex(0.13, 0.93, "CMS #it{Preliminary}")
-    txt1[-1].DrawLatex(0.60, 0.93, "2.6fb^{-1} (13 TeV)")
+    txt1[-1].DrawLatex(0.60, 0.93, "6.2 fb^{-1} (13 TeV)")
 else:
     txt1[-1].DrawLatex(0.15, 0.93, "#scale[0.8]{CMS #sqrt{s}=7 TeV; L=5.1 fb^{-1}}")
 txt1[-1].Draw()
@@ -322,7 +328,7 @@ txt1.append(ROOT.TLatex())
 txt1[-1].SetNDC()
 txt1[-1].SetTextSize(0.05)
 #txt1[-1].SetTextAlign(12)
-txt1[-1].DrawLatex(0.21, 0.55, "|#eta_{#gamma}| < 1.442")
+txt1[-1].DrawLatex(0.21, 0.55, "|#eta_{#gamma}| < 1.479")
 txt1[-1].Draw()
 
 c_single.cd()
@@ -354,8 +360,8 @@ mc_bottom = []
 #prefixes  = ["pho1_phoidMva_EB_nvtxgt15_cat0", "pho1_phoidMva_EB_nvtxgt15_cat0",
 #             "pho2_phoidMva_EE_nvtxgt15_cat0","pho2_phoidMva_EE_nvtxgt15_cat0"]
 
-prefixes_data = ["idmva1_cat1_DoubleEG", "idmva2_cat1_DoubleEG"]
-prefixes_mc   = ["idmva1_cat1_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8", "idmva2_cat1_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8"]
+prefixes_data = ["idmva1_cat1_SingleElectron", "idmva2_cat1_SingleElectron"]
+prefixes_mc   = ["idmva1_cat1_DYToEE", "idmva2_cat1_DYToEE"]
 #prefixes  = ["idmva_nom_EE"]
 
 fData.cd()
@@ -394,7 +400,7 @@ pad3.Draw()
 pad3.cd()
 plotDataMC(0, data, mc, mc_top, mc_bottom, False, True, xaxis, True, True)
 pad3.GetPrimitive(data[-1].GetName()).SetLabelSize(0)
-pad3.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 32.5)
+pad3.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 52.5)#gouranga
 #pad3.GetPrimitive(data[-1].GetName()).GetYaxis().SetTitleOffset(1)
 pad3.RedrawAxis()
 txt1.append(ROOT.TLatex())
@@ -405,15 +411,15 @@ txt1[-1].SetTextSize(0.05)
 if (options.TeV == 8):
     txt2.DrawLatex(0.08, 0.91, "#scale[0.5]{#times10^{3}}")
     txt1[-1].DrawLatex(0.13, 0.93, "CMS #it{Preliminary}")
-    txt1[-1].DrawLatex(0.60, 0.93, "2.6fb^{-1} (13 TeV)")
+    txt1[-1].DrawLatex(0.60, 0.93, "6.2 fb^{-1} (13 TeV)")
 else:
-    txt1[-1].DrawLatex(0.15, 0.93, "#scale[0.8]{2.6fb^{-1} (13TeV)}")
+    txt1[-1].DrawLatex(0.15, 0.93, "#scale[0.8]{6.2 fb^{-1} (13TeV)}")
 txt1[-1].Draw()
 txt1.append(ROOT.TLatex())
 txt1[-1].SetNDC()
 txt1[-1].SetTextSize(0.05)
 #txt1[-1].SetTextAlign(12)
-txt1[-1].DrawLatex(0.21, 0.55, "|#eta_{#gamma}| > 1.566")
+txt1[-1].DrawLatex(0.21, 0.55, "|#eta_{#gamma}| > 1.556")
 txt1[-1].Draw()
 
 c_single.cd()
@@ -440,9 +446,9 @@ if (options.TeV == 7):
     c_single.SaveAs("idmva_nvtx_7TeV.pdf")
     c_single.SaveAs("idmva_nvtx_7TeV.root")
 else:
+    c_single.SaveAs("idmva_syst.pdf")
     c_single.SaveAs("idmva_syst.png")
-    #c_single.SaveAs("idmva_nvtx.png")
-    #c_single.SaveAs("idmva_nvtx.root")
+    #c_single.SaveAs("idmva_syst.root")
 
 
 sys.exit()
@@ -454,8 +460,8 @@ mc = []
 mc_top = []
 mc_bottom = []
 
-prefixes_data = ["sigmaEoE1_cat0_DoubleEG", "sigmaEoE2_cat0_DoubleEG"]
-prefixes_mc   = ["sigmaEoE1_cat0_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8", "sigmaEoE2_cat0_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8"]
+prefixes_data = ["sigmaEoE1_cat0_SingleElectron", "sigmaEoE2_cat0_SingleElectron"]
+prefixes_mc   = ["sigmaEoE1_cat0_DYToEE", "sigmaEoE2_cat0_DYToEE"]
 
 
 fData.cd()
@@ -497,7 +503,7 @@ pad12.Draw()
 pad12.cd()
 plotDataMC(0, data, mc, mc_top, mc_bottom, False, True, xaxis, True, True)
 pad12.GetPrimitive(data[-1].GetName()).SetLabelSize(0)
-pad12.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 130.)
+pad12.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 245.)#gouranga
 pad12.GetPrimitive(data[-1].GetName()).GetYaxis().SetLabelSize(0.035)
 pad12.GetPrimitive(data[-1].GetName()).GetYaxis().SetTitleOffset(1)
 pad12.GetPrimitive(data[-1].GetName()).GetXaxis().SetTitleSize(0)
@@ -510,7 +516,7 @@ txt1[-1].SetTextSize(0.05)
 if (options.TeV == 8):
     txt2.DrawLatex(0.08, 0.91, "#scale[0.5]{#times10^{3}}")
     txt1[-1].DrawLatex(0.13, 0.93, "CMS #it{Preliminary}")
-    txt1[-1].DrawLatex(0.60, 0.93, "2.6fb^{-1} (13 TeV)")
+    txt1[-1].DrawLatex(0.60, 0.93, "6.2 fb^{-1} (13 TeV)")
 else:
     txt1[-1].DrawLatex(0.15, 0.93, "#scale[0.8]{CMS #sqrt{s}=7 TeV; L=5.1 fb^{-1}}")
 txt1[-1].Draw()
@@ -518,7 +524,7 @@ txt1.append(ROOT.TLatex())
 txt1[-1].SetNDC()
 txt1[-1].SetTextSize(0.05)
 #txt1[-1].SetTextAlign(12)
-txt1[-1].DrawLatex(0.61, 0.55, "|#eta_{#gamma}| < 1.442")
+txt1[-1].DrawLatex(0.61, 0.55, "|#eta_{#gamma}| < 1.479")
 txt1[-1].Draw()
 
 c_single2.cd()
@@ -550,8 +556,8 @@ mc_bottom = []
 #prefixes  = ["pho1_phoidMva_EB_nvtxgt15_cat0", "pho1_phoidMva_EB_nvtxgt15_cat0",
 #             "pho2_phoidMva_EE_nvtxgt15_cat0","pho2_phoidMva_EE_nvtxgt15_cat0"]
 
-prefixes_data = ["sigmaEoE1_cat1_DoubleEG", "sigmaEoE2_cat1_DoubleEG"]
-prefixes_mc   = ["sigmaEoE1_cat1_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8", "sigmaEoE2_cat1_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8"]
+prefixes_data = ["sigmaEoE1_cat1_SingleElectron", "sigmaEoE2_cat1_SingleElectron"]
+prefixes_mc   = ["sigmaEoE1_cat1_DYToEE", "sigmaEoE2_cat1_DYToEE"]
 #prefixes  = ["idmva_nom_EE"]
 
 fData.cd()
@@ -601,9 +607,9 @@ txt1[-1].SetTextSize(0.05)
 if (options.TeV == 8):
     txt2.DrawLatex(0.08, 0.91, "#scale[0.5]{#times10^{3}}")
     txt1[-1].DrawLatex(0.13, 0.93, "CMS #it{Preliminary}")
-    txt1[-1].DrawLatex(0.60, 0.93, "2.6fb^{-1} (13 TeV)")
+    txt1[-1].DrawLatex(0.60, 0.93, "6.2 fb^{-1} (13 TeV)")
 else:
-    txt1[-1].DrawLatex(0.51, 0.93, "#scale[0.8]{2.6fb^{-1} (13TeV)}")
+    txt1[-1].DrawLatex(0.51, 0.93, "#scale[0.8]{6.2 fb^{-1} (13TeV)}")
 txt1[-1].Draw()
 txt1.append(ROOT.TLatex())
 txt1[-1].SetNDC()
@@ -637,5 +643,5 @@ if (options.TeV == 7):
     c_single2.SaveAs("sigmaEoE_nvtx_7TeV.root")
 else:
     c_single2.SaveAs("sigmaEoE_syst.png")
-    #c_single.SaveAs("idmva_nvtx.png")
+    c_single.SaveAs("sigmaEoE_syst.pdf")
     #c_single.SaveAs("idmva_nvtx.root")

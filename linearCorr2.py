@@ -16,12 +16,12 @@ def computeSlope(x, b):
     return y
 
 f = ROOT.TFile(sys.argv[1])
-hNominal.append(f.Get("idmva1_cat0_DYToEE"))
-hNominal.append(f.Get("idmva1_cat1_DYToEE"))
-hDown.append(f.Get("idmvadown1_cat0_DYToEE"))
-hDown.append(f.Get("idmvadown1_cat1_DYToEE"))
-hUp.append(f.Get("idmvaup1_cat0_DYToEE"))
-hUp.append(f.Get("idmvaup1_cat1_DYToEE"))
+hNominal.append(f.Get("idmva2_cat0_DYToEE"))
+hNominal.append(f.Get("idmva2_cat1_DYToEE"))
+hDown.append(f.Get("idmvadown2_cat0_DYToEE"))
+hDown.append(f.Get("idmvadown2_cat1_DYToEE"))
+hUp.append(f.Get("idmvaup2_cat0_DYToEE"))
+hUp.append(f.Get("idmvaup2_cat1_DYToEE"))
 
 for b in xrange(len(hNominal)):
     x0 = hNominal[b].FindBin(xmin[b])
@@ -35,7 +35,7 @@ for b in xrange(len(hNominal)):
         k = computeSlope(hNominal[b].GetBinLowEdge(i), b)
         hDown[b].SetBinContent(i, hNominal[b].GetBinContent(i)+val*k)
 
-out = ROOT.TFile("output1.root","RECREATE")
+out = ROOT.TFile("output2.root","RECREATE")
 for h in hNominal:
     h.Write()
 for h in hUp:
