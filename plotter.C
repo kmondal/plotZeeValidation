@@ -245,7 +245,7 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
       
       chain->GetEntry(z);
       float mass = branchesF["mass"];
-      if ((mass > 86 && mass < 94) && (branchesF["subIDMVA"]>-0.9 && branchesF["leadIDMVA"]>-0.9)) {
+      if ((mass > 70 && mass < 110) && (branchesF["subIDMVA"]>-0.9 && branchesF["leadIDMVA"]>-0.9)) {
 	
 	float weight = 1; 
 	if (sampletype == 1) {

@@ -12,7 +12,7 @@ templates = (
     #'bdtout_{R9t}R9{syst}_cat{cat4}_DYJetsToLL',
     #'bdtout{syst}{vtxbin}_cat0_DYJetsToLL',
     #'idmva{syst}{pho}_cat{cat01}_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8',
-    #'idmva{syst}{pho}_cat{cat01}_DYToEE',
+    'idmva{syst}{pho}_cat{cat01}_DYToEE',
     #'sigmaEoE{syst}{pho}_cat{cat01}_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8',
     'sigmaEoE{syst}{pho}_cat{cat01}_DYToEE',
 #    'idmva_{syst}_EE',

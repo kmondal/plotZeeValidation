@@ -20,7 +20,7 @@ pad2 = []
 singlePho = False
 normalizeToArea = True
 colors = (ROOT.myColorA3, ROOT.kMagenta, ROOT.kGreen, ROOT.kCyan, ROOT.kRed, ROOT.kOrange)
-lumi= 6.2
+lumi= 12.9
 crosssection = 1997.0
 
 samples = {}
@@ -67,7 +67,8 @@ for l in lines:
 
 vars = {}
 #f1 = open("plotvariables.dat")
-f1 = open("plotvariables_AN.dat")
+#f1 = open("plotvariables_AN.dat")
+f1 = open("sigmaEoE.dat")
 lines = f1.readlines()
 f1.close()
 for l in lines:
@@ -123,7 +124,7 @@ for nc, v in enumerate(vars):
                         histos[-1][-1].SetFillColor(samples[s[0]][3])   
                         histos[-1][-1].SetLineColor(samples[s[0]][3])
                         if (not normalizeToArea):
-                            histos[-1][-1].Scale(lumi/6.2)
+                            histos[-1][-1].Scale(lumi/12.9)
                             #nentriesmc = histos[-1][-1].GetEntries()
                             #histos[-1][-1].Scale(crosssection*lumi/nentriesmc)
                         else:
