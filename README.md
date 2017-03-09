@@ -8,8 +8,9 @@ git clone https://github.com/kmondal/plotZeeValidation
 cd plotZeeValidation
 root -l -b
 .L plotter.C++
-plotter(data_file_name, mc_file_name)
-python combinePlots.py <output_file_of_previous_step> <Output_dir_for_plots_to_save>
+plotter(data_file_name, mc_file_name, IDMVA_transformation_file)
+hadd out_combined.root out_data.root out_zee.root
+python combinePlots.py out_combined.root <Output_dir_for_plots_to_save>
 ```
 
 This should create a .root file with all the plots. The plots (and the event categorization) are defined in the following files:
