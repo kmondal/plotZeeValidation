@@ -307,7 +307,7 @@ pad1.Draw()
 pad1.cd()
 plotDataMC(0, data, mc, mc_top, mc_bottom, False, True, xaxis, True, True)
 pad1.GetPrimitive(data[-1].GetName()).SetLabelSize(0)
-pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 520.) #gouranga
+pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 1180.) #gouranga
 pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetLabelSize(0.035)
 pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetTitleOffset(1.2)
 pad1.GetPrimitive(data[-1].GetName()).GetXaxis().SetTitleSize(0)
@@ -320,7 +320,7 @@ txt1[-1].SetTextSize(0.05)
 if (options.TeV == 8):
     txt2.DrawLatex(0.09, 0.91, "#scale[0.5]{#times10^{3}}")
     txt1[-1].DrawLatex(0.13, 0.93, "#bf{CMS} #it{Preliminary}")
-    txt1[-1].DrawLatex(0.55, 0.93, "12.9 fb^{-1} (13 TeV)")
+    txt1[-1].DrawLatex(0.55, 0.93, "35.9 fb^{-1} (13 TeV)")
 else:
     txt1[-1].DrawLatex(0.15, 0.93, "#scale[0.8]{CMS #sqrt{s}=7 TeV; L=5.1 fb^{-1}}")
 txt1[-1].Draw()
@@ -328,7 +328,7 @@ txt1.append(ROOT.TLatex())
 txt1[-1].SetNDC()
 txt1[-1].SetTextSize(0.05)
 #txt1[-1].SetTextAlign(12)
-txt1[-1].DrawLatex(0.21, 0.55, "|#eta_{#gamma}| < 1.479")
+txt1[-1].DrawLatex(0.21, 0.55, "|#eta_{#gamma}| < 1.444")
 txt1[-1].Draw()
 
 c_single.cd()
@@ -400,7 +400,7 @@ pad3.Draw()
 pad3.cd()
 plotDataMC(0, data, mc, mc_top, mc_bottom, False, True, xaxis, True, True)
 pad3.GetPrimitive(data[-1].GetName()).SetLabelSize(0)
-pad3.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 110.0)#gouranga
+pad3.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 180.0)#gouranga
 pad3.GetPrimitive(data[-1].GetName()).GetYaxis().SetTitleOffset(1.2)
 pad3.RedrawAxis()
 txt1.append(ROOT.TLatex())
@@ -411,7 +411,7 @@ txt1[-1].SetTextSize(0.05)
 if (options.TeV == 8):
     txt2.DrawLatex(0.09, 0.91, "#scale[0.5]{#times10^{3}}")
     txt1[-1].DrawLatex(0.13, 0.93, "#bf{CMS} #it{Preliminary}")
-    txt1[-1].DrawLatex(0.55, 0.93, "12.9 fb^{-1} (13 TeV)")
+    txt1[-1].DrawLatex(0.55, 0.93, "35.9 fb^{-1} (13 TeV)")
 else:
     txt1[-1].DrawLatex(0.15, 0.93, "#scale[0.8]{6.2 fb^{-1} (13TeV)}")
 txt1[-1].Draw()
@@ -419,7 +419,7 @@ txt1.append(ROOT.TLatex())
 txt1[-1].SetNDC()
 txt1[-1].SetTextSize(0.05)
 #txt1[-1].SetTextAlign(12)
-txt1[-1].DrawLatex(0.21, 0.55, "|#eta_{#gamma}| > 1.556")
+txt1[-1].DrawLatex(0.21, 0.55, "|#eta_{#gamma}| > 1.566")
 txt1[-1].Draw()
 
 c_single.cd()

@@ -1,6 +1,7 @@
 import ROOT
 import sys, operator
 import hggStyle
+import os
 
 ROOT.gROOT.SetBatch(True)
 
@@ -20,8 +21,9 @@ pad2 = []
 singlePho = False
 normalizeToArea = True
 colors = (ROOT.myColorA3, ROOT.kMagenta, ROOT.kGreen, ROOT.kCyan, ROOT.kRed, ROOT.kOrange)
-lumi= 12.9
-crosssection = 1997.0
+lumi= 35.9
+# processedlumi= 36.5
+crosssection = 2008.33
 
 samples = {}
 f1 = open("inputfiles.dat")
@@ -67,8 +69,8 @@ for l in lines:
 
 vars = {}
 #f1 = open("plotvariables.dat")
-#f1 = open("plotvariables_AN.dat")
-f1 = open("sigmaEoE.dat")
+f1 = open("plotvariables_AN.dat")
+#f1 = open("sigmaEoE.dat")
 lines = f1.readlines()
 f1.close()
 for l in lines:
@@ -93,6 +95,11 @@ histosMC = []
 histosData = []
 ratio = []
 f = ROOT.TFile(sys.argv[1])
+outdir = sys.argv[2] # use to redirect output in a directory 
+
+if not os.path.exists(outdir):
+    os.makedirs(outdir)
+    
 fileKeys = f.GetListOfKeys()
 prefix = ("", "1", "2")
 for nc, v in enumerate(vars):
@@ -124,7 +131,7 @@ for nc, v in enumerate(vars):
                         histos[-1][-1].SetFillColor(samples[s[0]][3])   
                         histos[-1][-1].SetLineColor(samples[s[0]][3])
                         if (not normalizeToArea):
-                            histos[-1][-1].Scale(lumi/12.9)
+                            histos[-1][-1].Scale(lumi/36.5)
                             #nentriesmc = histos[-1][-1].GetEntries()
                             #histos[-1][-1].Scale(crosssection*lumi/nentriesmc)
                         else:
@@ -142,6 +149,10 @@ for nc, v in enumerate(vars):
             else:
                 histosMC[-1].Add(h)
         maxVal = max(histosData[-1].GetMaximum(), histosMC[-1].GetMaximum())
+        if (histosData[-1].Integral() == 0):
+            eff = 0
+        else:
+            eff = round(histosData[-1].Integral()/histosMC[-1].Integral(),2)
 
 
         canvases[-1].cd()
@@ -177,6 +188,7 @@ for nc, v in enumerate(vars):
         txt.append(ROOT.TLatex())
         txt[-1].SetNDC(True)
         #txt[-1].SetTextSize(0.035)
+        #txt[-1].DrawLatex(0.28, 0.93, "#scale[1.5]{Eff: "+str(eff)+"}")
         txt[-1].DrawLatex(0.18, 0.85, "#scale[1.5]{#bf{CMS}}")
         txt[-1].DrawLatex(0.26, 0.85, "#scale[1.2]{#it{Preliminary}}")
         txt[-1].DrawLatex(0.67, 0.93, "#scale[1.5]{"+str(lumi)+" fb^{-1} (13 TeV)}")
@@ -191,9 +203,9 @@ for nc, v in enumerate(vars):
         leg[-1].SetFillColor(ROOT.kWhite)
         leg[-1].SetBorderSize(0)
                 
-        header = "|#eta|<1.479"
+        header = "|#eta|<1.4442"
         if (c == 1):
-            header = "|#eta|>1.556"
+            header = "|#eta|>1.566"
         if (v=="rho" or v=="mass" or v=="nvtx" or v=="leadeta" or v=="subleadeta" or v=="sceta" or v=="diphopT" or v=="sigmaMoM"):
             header = ""
 
@@ -236,9 +248,9 @@ for nc, v in enumerate(vars):
         pad2[-1].SetGridy(1)
         pad2[-1].Update()
 
-        canvases[-1].SaveAs(v+"_cat"+str(c)+".png")
-        #canvases[-1].SaveAs(v+"_cat"+str(c)+".root")
-        canvases[-1].SaveAs(v+"_cat"+str(c)+".pdf")
+        canvases[-1].SaveAs(outdir+"/"+v+"_cat"+str(c)+".png")
+        canvases[-1].SaveAs(outdir+"/"+v+"_cat"+str(c)+".root")
+        canvases[-1].SaveAs(outdir+"/"+v+"_cat"+str(c)+".pdf")
 
 #raw_input()
         

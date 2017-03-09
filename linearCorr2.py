@@ -6,14 +6,26 @@ hNominal = []
 hUp = []
 hDown = []
 xmin = (-0.9, -0.9)
-ymin = (1.5, 1.5)
-xmax = (0.5, 0.5)
-ymax = (1.0, 1.0)
+yminup = (1.7, 1.7)
+ymindown = (0.5, 0.5)
+xmax = (0.8, 0.8)
+ymaxup = (1.0, 1.0)
+ymaxdown = (1.0, 1.0)
 
-def computeSlope(x, b):
-    m = -(ymax[b]-ymin[b])/(xmax[b]-xmin[b])
-    y = m*(x-xmin[b]) + ymin[b]
+def computeSlope1(x, b):
+    m = (ymaxup[b]-yminup[b])/(xmax[b]-xmin[b])
+    y = m*(x-xmin[b]) + yminup[b]
     return y
+
+def computeSlope2(x, b):
+    m = (ymaxdown[b]-ymindown[b])/(xmax[b]-xmin[b])
+    y = m*(x-xmin[b]) + ymindown[b]
+    return y
+
+#def computeSlope2(x, b):
+#    m = (ymax[b]-ymin[b])/(xmax[b]-xmin[b])
+#    y = m*(x-xmin[b]) + ymin[b]
+#    return y
 
 f = ROOT.TFile(sys.argv[1])
 hNominal.append(f.Get("idmva2_cat0_DYToEE"))
@@ -28,12 +40,14 @@ for b in xrange(len(hNominal)):
     x1 = hNominal[b].FindBin(xmax[b])
     for i in xrange(x0, x1):
         val = abs(hNominal[b].GetBinContent(i) - hUp[b].GetBinContent(i))
-        k = computeSlope(hNominal[b].GetBinLowEdge(i), b)
-        hUp[b].SetBinContent(i, hNominal[b].GetBinContent(i)-val*k)
+        k = computeSlope1(hNominal[b].GetBinLowEdge(i), b)
+        hUp[b].SetBinContent(i, (hNominal[b].GetBinContent(i)+val)*k)
+        print k
 
         val = abs(hNominal[b].GetBinContent(i) - hDown[b].GetBinContent(i))
-        k = computeSlope(hNominal[b].GetBinLowEdge(i), b)
-        hDown[b].SetBinContent(i, hNominal[b].GetBinContent(i)+val*k)
+        k = computeSlope2(hNominal[b].GetBinLowEdge(i), b)
+        hDown[b].SetBinContent(i, (hNominal[b].GetBinContent(i)-val)*k)
+        print k
 
 out = ROOT.TFile("output2.root","RECREATE")
 for h in hNominal:
