@@ -35,7 +35,7 @@ IDMVA with systematic plot
 The necessary histograms used as inputs are produced in the ZeeValidation step. More generally you need to add there all the plots for nominal, up, down variations which you want to plot. At this point you need to modify the david_template.py file in order to able to read the name of these plots. Then:
 
 ```
-python morphbands,py david_template.py yourROOTFile.root
+python morphbands.py david_template.py yourROOTFile.root
 ```
 
 The output is another .root file with plots nomeplot_bottom nomeplot_top of the corrected histograms. Finally with the idmva_syst.py macro the systematic band is added to the distribution.
