@@ -84,3 +84,7 @@
 0 1 2 100 0 0 0.5 0 0 esEovRawE1 ES@E/Raw@E Events leadesEnovSCRawEn
 0 1 1 100 0 0 500 0 0 ScRawE2 SC@Raw@E Events subleadScRawE
 0 1 2 100 0 0 500 0 0 ScRawE1 SC@Raw@E Events leadScRawE
+0 1 1 100 0 0 0.075 0 0 hoe2 H/E Events subleadHoE
+0 1 2 100 0 0 0.075 0 0 hoe1 H/E Events leadHoE
+0 1 1 100 0 0 6.5 0 0 trkiso2 TrkIso Events subleadTrkIso
+0 1 2 100 0 0 6.5 0 0 trkiso1 TrkIso Events leadTrkIso

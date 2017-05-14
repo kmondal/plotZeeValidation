@@ -31,6 +31,6 @@ variations = {
     'ebee' : ('EB','EE','EBEE'),
     'ebee2' : ('EB','EE'),
     'R9t' : ('low','mixed','high'),
-    'syst' : ('','top','bottom'),
+    'syst' : ('','up','down'),
     'vtxbin' : ('_nvtx0to13','_nvtx14to18','_nvtx19up'),
     }

@@ -4,7 +4,7 @@ ZeeValidation
 Once you have the corresponding data and MC trees you can produce plots following the instructions below (no CMSSW is needed here).
 
 ```
-git clone https://github.com/kmondal/plotZeeValidation
+git clone -b May14_2017 https://github.com/kmondal/plotZeeValidation
 cd plotZeeValidation
 root -l -b
 .L plotter.C++
@@ -25,13 +25,21 @@ Deriving Shower Shape Corrections
 =======================================
 
 In order to derive shower shape transformation you can use makeTransformation.py script. Once the Zee validation ntuples have been produced you can 
-run the script three times with different parameters to: 1) produce the .root file with the necessary plots (python makeTransformation.py -p 
-mc_ntuple_name.root target_ntuple_name.root) 2) derive the transformations (python makeTransformation.py -c) 3) test the transformations on the 
-original ntuples (python makeTransformation.py -t mc_ntuple_name.root target_ntuple_name.root)
+run the script three times with different parameters to: 
+1. Produce the .root file with the necessary plots 
+   
+   python makeTransformation.py -p mc_ntuple_name.root data_ntuple_name.root
+
+2. Derive the transformations 
+
+   python makeTransformation.py -c
+
+3. Test the transformations on the original ntuples 
+
+   python makeTransformation.py -t mc_ntuple_name.root data_ntuple_name.root
 
 IDMVA with systematic plot
 ==========================
-
 
 The necessary histograms used as inputs are produced in the ZeeValidation step. More generally you need to add there all the plots for nominal, up, down variations which you want to plot. At this point you need to modify the david_template.py file in order to able to read the name of these plots. Then:
 
@@ -46,3 +54,8 @@ python idmva_syst.py --data your_combinedROOTFile.root --mc output_of_previous_s
 ```
 
 In order to apply the additional linearly increasing systematic you can use the linearCorrection.py script (available in the same directory). Beware you need to run it BEFORE the morphbands step described above. To run it just choose the parameter of the linear correction (xmin, xmax, ymin, ymax) and update the input filename.
+
+SigmaEoE with systematic plot
+============================
+
+Same as for IDMVA. In the last step use sigmaEoE_syst.py instead of idmva_syst.py.

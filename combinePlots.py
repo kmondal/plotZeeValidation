@@ -149,10 +149,10 @@ for nc, v in enumerate(vars):
             else:
                 histosMC[-1].Add(h)
         maxVal = max(histosData[-1].GetMaximum(), histosMC[-1].GetMaximum())
-        if (histosData[-1].Integral() == 0):
-            eff = 0
-        else:
-            eff = round(histosData[-1].Integral()/histosMC[-1].Integral(),2)
+#        if (histosData[-1].Integral() == 0):
+#            eff = 0
+#        else:
+#            eff = round(histosData[-1].Integral()/histosMC[-1].Integral(),2)
 
 
         canvases[-1].cd()

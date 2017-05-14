@@ -76,7 +76,9 @@ float getVtxWeights(int nvtx) {
   if (nvtx > 0) {
     int bin = nvtxweight->FindBin(nvtx);
     return nvtxweight->GetBinContent(bin);
-  } //else {
+  }
+  else return 0;
+  //else {
     //if (fabs(eta)<1.479) {
     //  int bin = r9WeightEB->FindBin(r9);
     //  return r9WeightEB->GetBinContent(bin);
@@ -325,15 +327,10 @@ void plotter_mc(const char* datafilename, const char* mcfilename, const char *id
       }
       //std::cout << "Wrote histo successfully" << var << std::endl; 
     }
-    
     out->Close();
   }
 }
 void runAllPlotter()
-
 {
   plotter_mc("/hadoop/cms/store/user/gkole/Hgg/Kuntal/Moriond17_AfterPreApproval/February2017_v3/Moriond17_March5/output_ReMiniAOD.root","/hadoop/cms/store/user/gkole/Hgg/Kuntal/Moriond17_AfterPreApproval/February2017_v3/Moriond17_March5/output_DYJesToLL_HCALDebug_v2.root","transformationIDMVA_v2.root");
-
-  //  plotter_mc("/hadoop/cms/store/user/gkole/Hgg/Moriond17/ZeeMoriond2017_DYToEE_DYToLL_correctPreSel/output_data_single_v2.root","/hadoop/cms/store/user/gkole/Hgg/Moriond17/ZeeMoriond2017_DYToEE_DYToLL_correctPreSel/output_DYJetsToLL_v2.root");
-
 }

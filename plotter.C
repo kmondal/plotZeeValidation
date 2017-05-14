@@ -14,8 +14,8 @@
 #include <vector>
 #include <sstream>
 using std::ifstream;
-float idmvaShift = 0.04; //0.03 in Moriond;
-float sigmaEScale = 0.05; //0.05; // relative 5%
+float idmvaShift = 0.03; //0.03 in Moriond;
+float sigmaEScale = 0.05; //0.05 in Moriond
 
 std::vector<std::pair<std::string, int> > samples;
 
@@ -76,7 +76,9 @@ float getVtxWeights(int nvtx) {
   if (nvtx > 0) {
     int bin = nvtxweight->FindBin(nvtx);
     return nvtxweight->GetBinContent(bin);
-  } //else {
+  } 
+  else return 0;
+  //else {
     //if (fabs(eta)<1.479) {
     //  int bin = r9WeightEB->FindBin(r9);
     //  return r9WeightEB->GetBinContent(bin);
