@@ -9,7 +9,7 @@ hdata = []
 transfName   = ["transfr9EB", "transfr9EE", "transfsieieEB", "transfsieieEE", "transfsipipEB", "transfsipipEE", "transfsieipEB", "transfsieipEE"]
 plotNameData = ["hdatar9EB", "hdatar9EE", "hdatasieieEB", "hdatasieieEE", "hdatasipipEB", "hdatasipipEE", "hdatasieipEB", "hdatasieipEE"]
 plotNameMC   = ["hmcr9EB", "hmcr9EE", "hmcsieieEB", "hmcsieieEE", "hmcsipipEB", "hmcsipipEE", "hmcsieipEB", "hmcsieipEE"]
-plotDef      = [(1000, 0., 1.), (1000, 0., 1.), (1000, 0.0, 0.02), (1000, 0.0, 0.04), (1000, 0.0, 0.001), (1000, 0.0, 0.004), (1000, -0.0001, 0.0001), (1000, -0.0005, 0.0005)]
+plotDef      = [(1000, 0., 1.), (1000, 0., 1.), (1000, 0.0, 0.02), (1000, 0.0, 0.04), (1000, 0.0, 0.03), (1000, 0.0, 0.07), (1000, -0.0001, 0.0001), (1000, -0.0005, 0.0005)]
 variables = ["R9", "R9", "sieie", "sieie", "sipip", "sipip", "sieip", "sieip"]
 
 def test(makeOutput=False):
@@ -49,16 +49,12 @@ def test(makeOutput=False):
 
         et1 = array.array('f', [0])
         eta1 = array.array('f', [0])
-        s41 = array.array('f', [0])
-        etawidth1 = array.array('f', [0])
         r91 = array.array('f', [0])
         sieie1 = array.array('f', [0])
         sipip1 = array.array('f', [0])
         sieip1 = array.array('f', [0])
         et2 = array.array('f', [0])
         eta2 = array.array('f', [0])
-        s42 = array.array('f', [0])
-        etawidth2 = array.array('f', [0])
         r92 = array.array('f', [0])
         sieie2 = array.array('f', [0])
         sipip2 = array.array('f', [0])
@@ -69,39 +65,31 @@ def test(makeOutput=False):
         t.SetBranchStatus("*", 0)
         t.SetBranchStatus("leadPt", 1)
         t.SetBranchStatus("leadEta", 1)
-        t.SetBranchStatus("leads4ratio", 1)
-        t.SetBranchStatus("leadetawidth", 1)
-        t.SetBranchStatus("leadr9", 1)
-        t.SetBranchStatus("leadsieie", 1)
-        t.SetBranchStatus("leadcovipip", 1)
-        t.SetBranchStatus("leadcovieip", 1)
+        t.SetBranchStatus("leadoldr9", 1)
+        t.SetBranchStatus("leadoldsieie", 1)
+        t.SetBranchStatus("leadoldcovipip", 1)
+        t.SetBranchStatus("leadoldcovieip", 1)
         t.SetBranchStatus("subleadPt", 1)
         t.SetBranchStatus("subleadEta", 1)
-        t.SetBranchStatus("subleads4ratio", 1)
-        t.SetBranchStatus("subleadetawidth", 1)
-        t.SetBranchStatus("subleadr9", 1)
-        t.SetBranchStatus("subleadsieie", 1)
-        t.SetBranchStatus("subleadcovipip", 1)
-        t.SetBranchStatus("subleadcovieip", 1)
+        t.SetBranchStatus("subleadoldr9", 1)
+        t.SetBranchStatus("subleadoldsieie", 1)
+        t.SetBranchStatus("subleadoldcovipip", 1)
+        t.SetBranchStatus("subleadoldcovieip", 1)
         t.SetBranchStatus("weight", 1)
         t.SetBranchStatus("mass", 1)
 
         t.SetBranchAddress("leadPt", et1)
         t.SetBranchAddress("leadEta", eta1)
-        t.SetBranchAddress("leads4ratio", s41)
-        t.SetBranchAddress("leadetawidth", etawidth1)
-        t.SetBranchAddress("leadr9", r91)
-        t.SetBranchAddress("leadsieie", sieie1)
-        t.SetBranchAddress("leadcovipip", sipip1)
-        t.SetBranchAddress("leadcovieip", sieip1)
+        t.SetBranchAddress("leadoldr9", r91)
+        t.SetBranchAddress("leadoldsieie", sieie1)
+        t.SetBranchAddress("leadoldcovipip", sipip1)
+        t.SetBranchAddress("leadoldcovieip", sieip1)
         t.SetBranchAddress("subleadPt", et2)
         t.SetBranchAddress("subleadEta", eta2)
-        t.SetBranchAddress("subleads4ratio", s42)
-        t.SetBranchAddress("subleadetawidth", etawidth2)
-        t.SetBranchAddress("subleadr9", r92)
-        t.SetBranchAddress("subleadsieie", sieie2)
-        t.SetBranchAddress("subleadcovipip", sipip2)
-        t.SetBranchAddress("subleadcovieip", sieip2)
+        t.SetBranchAddress("subleadoldr9", r92)
+        t.SetBranchAddress("subleadoldsieie", sieie2)
+        t.SetBranchAddress("subleadoldcovipip", sipip2)
+        t.SetBranchAddress("subleadoldcovieip", sieip2)
         t.SetBranchAddress("weight", weight)
         t.SetBranchAddress("mass", mass)
 
@@ -130,7 +118,7 @@ def test(makeOutput=False):
                             hmcCorr[2].Fill(graphs[2].Eval(sieie1[0]), weight[0])
                             hmcCorr[4].Fill(graphs[4].Eval(sipip1[0]), weight[0])
                             hmcCorr[6].Fill(graphs[6].Eval(sieip1[0]), weight[0])
-                    elif (r91[0]>0.8):
+                    elif (r91[0]>0.9):
                         hmc[1].Fill(r91[0], weight[0])
                         hmc[3].Fill(sieie1[0], weight[0])
                         hmc[5].Fill(sipip1[0], weight[0])
@@ -146,7 +134,7 @@ def test(makeOutput=False):
                         hdata[2].Fill(sieie1[0], weight[0])
                         hdata[4].Fill(sipip1[0], weight[0])
                         hdata[6].Fill(sieip1[0], weight[0])
-                    elif (r91[0]>0.8):
+                    elif (r91[0]>0.9):
                         hdata[1].Fill(r91[0], weight[0])
                         hdata[3].Fill(sieie1[0], weight[0])
                         hdata[5].Fill(sipip1[0], weight[0])
@@ -164,7 +152,7 @@ def test(makeOutput=False):
                             hmcCorr[2].Fill(graphs[2].Eval(sieie2[0]), weight[0])
                             hmcCorr[4].Fill(graphs[4].Eval(sipip2[0]), weight[0])
                             hmcCorr[6].Fill(graphs[6].Eval(sieip2[0]), weight[0])
-                    elif (r92[0]>0.8):
+                    elif (r92[0]>0.9):
                         hmc[1].Fill(r92[0], weight[0])
                         hmc[3].Fill(sieie2[0], weight[0])
                         hmc[5].Fill(sipip2[0], weight[0])
@@ -180,7 +168,7 @@ def test(makeOutput=False):
                         hdata[2].Fill(sieie2[0], weight[0])
                         hdata[4].Fill(sipip2[0], weight[0])
                         hdata[6].Fill(sieip2[0], weight[0])
-                    elif (r92[0]>0.8):
+                    elif (r92[0]>0.9):
                         hdata[1].Fill(r92[0], weight[0])
                         hdata[3].Fill(sieie2[0], weight[0])
                         hdata[5].Fill(sipip2[0], weight[0])
