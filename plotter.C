@@ -76,15 +76,8 @@ float getVtxWeights(int nvtx) {
   if (nvtx > 0) {
     int bin = nvtxweight->FindBin(nvtx);
     return nvtxweight->GetBinContent(bin);
-  } //else {
-    //if (fabs(eta)<1.479) {
-    //  int bin = r9WeightEB->FindBin(r9);
-    //  return r9WeightEB->GetBinContent(bin);
-    //} else {
-    //  int bin = r9WeightEE->FindBin(r9);
-    //  return r9WeightEE->GetBinContent(bin);
-    //}
-  //}
+  }
+  else return 0;
 }
   
 class HistoContainer {

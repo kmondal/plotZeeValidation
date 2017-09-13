@@ -76,15 +76,8 @@ float getVtxWeights(int nvtx) {
   if (nvtx > 0) {
     int bin = nvtxweight->FindBin(nvtx);
     return nvtxweight->GetBinContent(bin);
-  } //else {
-    //if (fabs(eta)<1.479) {
-    //  int bin = r9WeightEB->FindBin(r9);
-    //  return r9WeightEB->GetBinContent(bin);
-    //} else {
-    //  int bin = r9WeightEE->FindBin(r9);
-    //  return r9WeightEE->GetBinContent(bin);
-    //}
-  //}
+  }
+  else return 0;
 }
   
 class HistoContainer {
@@ -246,7 +239,7 @@ void plotter_mc(const char* datafilename, const char* mcfilename, const char *id
       chain->GetEntry(z);
       float mass = branchesF["mass"];
 
-      if ((mass > 70 && mass < 110) && (branchesF["subIDMVA"]>-0.9 && branchesF["leadIDMVA"]>-0.9) && (branchesF["leadPt"]>40. && branchesF["subleadPt"]>30.)) {
+      if ((mass > 70 && mass < 110) && (branchesF["subIDMVA"]>-0.9 && branchesF["leadIDMVA"]>-0.9) && (branchesF["leadPt"]>35.)) {
 	
 	float weight = 1; 
 	if (sampletype == 1) {
@@ -332,7 +325,7 @@ void plotter_mc(const char* datafilename, const char* mcfilename, const char *id
 void runAllPlotter()
 
 {
-  plotter_mc("/hadoop/cms/store/user/gkole/Hgg/Kuntal/Moriond17_AfterPreApproval/February2017_v3/Moriond17_March5/output_ReMiniAOD.root","/hadoop/cms/store/user/gkole/Hgg/Kuntal/Moriond17_AfterPreApproval/February2017_v3/Moriond17_March5/output_DYJesToLL_HCALDebug_v2.root","transformationIDMVA_v2.root");
+  plotter_mc("/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/August2017_v1/output_data_2017.root","/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/August2017_v1/output_DYJetsToLL.root","transformationIDMVA_v2.root");
 
   //  plotter_mc("/hadoop/cms/store/user/gkole/Hgg/Moriond17/ZeeMoriond2017_DYToEE_DYToLL_correctPreSel/output_data_single_v2.root","/hadoop/cms/store/user/gkole/Hgg/Moriond17/ZeeMoriond2017_DYToEE_DYToLL_correctPreSel/output_DYJetsToLL_v2.root");
 
