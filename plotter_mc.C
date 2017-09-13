@@ -14,7 +14,7 @@
 #include <vector>
 #include <sstream>
 using std::ifstream;
-float idmvaShift = 0.04; //0.03 in Moriond;
+float idmvaShift = 0.03; //0.03 in Moriond;
 float sigmaEScale = 0.05; //0.05; // relative 5%
 
 std::vector<std::pair<std::string, int> > samples;
@@ -100,7 +100,7 @@ void readTransformations(std::vector<TGraph*>& graphs) {
   fInput->Close();
 }
 
-void plotter(const char* datafilename, const char* mcfilename, const char *idmvaCorrectionFile = NULL) {
+void plotter_mc(const char* datafilename, const char* mcfilename, const char *idmvaCorrectionFile = NULL) {
 
   // READ Transformations
   std::vector<TGraph*> graphs;
@@ -238,13 +238,12 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
       
       chain->GetEntry(z);
       float mass = branchesF["mass"];
-      if ((mass > 70 && mass < 110) && (branchesF["subIDMVA"]>-0.9 && branchesF["leadIDMVA"]>-0.9)) {
+
+      if ((mass > 70 && mass < 110) && (branchesF["subIDMVA"]>-0.9 && branchesF["leadIDMVA"]>-0.9) && (branchesF["leadPt"]>35.)) {
 	
 	float weight = 1; 
 	if (sampletype == 1) {
-	  //weight = getWeights(0, 0, branchesF["dipho_pt"])*getVtxWeights(branchesI["nvtx"]);//*branchesF["weight"];
 	  weight = branchesF["weight"];
-	  //std::cout << "weight" << weight << branchesF["weight"] << "   " <<getWeights(0, 0, branchesF["dipho_pt"]) << "  "<< getVtxWeights(branchesI["nvtx"])  <<  std::endl;
 	}  
 	for (unsigned int s=0; s<samples.size(); s++) {
 	  for (unsigned int h=0; h<histoDef.size(); h++) {
@@ -300,11 +299,12 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
 	//std::cout << "Debug level 8" << std::endl;	
       }
       //std::cout << "Debug level 9" << std::endl;
-      //if(z==100000) break ;
+      if(sampletype==0 && z>=0) break ;
+      //if(sampletype==1 && z>=10000) break ;
     }
     
     std::cout << sampletype << std::endl;
-    std::string rootOutputFile = "out_data.root";  
+    std::string rootOutputFile = "out_data_tmp.root";  
     if (sampletype == 1)
       rootOutputFile = "out_zee.root";
     
@@ -321,4 +321,12 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
     
     out->Close();
   }
+}
+void runAllPlotter()
+
+{
+  plotter_mc("/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/August2017_v1/output_data_2017.root","/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/August2017_v1/output_DYJetsToLL.root","transformationIDMVA_v2.root");
+
+  //  plotter_mc("/hadoop/cms/store/user/gkole/Hgg/Moriond17/ZeeMoriond2017_DYToEE_DYToLL_correctPreSel/output_data_single_v2.root","/hadoop/cms/store/user/gkole/Hgg/Moriond17/ZeeMoriond2017_DYToEE_DYToLL_correctPreSel/output_DYJetsToLL_v2.root");
+
 }
