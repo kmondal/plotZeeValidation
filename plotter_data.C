@@ -324,7 +324,7 @@ void plotter_data(const char* datafilename, const char* mcfilename, const char *
 void runAllPlotter()
 
 {
-  plotter_data("/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/August2017_v1/output_data_2017.root","/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/August2017_v1/output_DYJetsToLL.root");
+  plotter_data("/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/October2017_v1/October03/output_data_2017.root","/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/October2017_v1/October03/output_DYJets.root");
 
   //  plotter_mc("/hadoop/cms/store/user/gkole/Hgg/Moriond17/ZeeMoriond2017_DYToEE_DYToLL_correctPreSel/output_data_single_v2.root","/hadoop/cms/store/user/gkole/Hgg/Moriond17/ZeeMoriond2017_DYToEE_DYToLL_correctPreSel/output_DYJetsToLL_v2.root");
 
