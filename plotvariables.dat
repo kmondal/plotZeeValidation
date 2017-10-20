@@ -4,8 +4,8 @@
 0 0 0 50 0 -2.5 2.5 0 0 sceta sceta Events scEta	 
 1 0 1 100 0 -1. 1. 0 0 subidmva IDMVA Events subIDMVA
 1 0 2 100 0 -1. 1. 0 0 leadidmva IDMVA Events leadIDMVA
-0 0 1 100 0 0.005 0.06 0 0 sigmaEoE2 #sigma_{E}/E Events sigmaEoE2
-0 0 2 100 0 0.005 0.06 0 0 sigmaEoE1 #sigma_{E}/E Events sigmaEoE1
+0 0 1 100 0 0.005 0.06 0 0 subleadsigmaEoE #sigma_{E}/E Events subleadsigmaEoE
+0 0 2 100 0 0.005 0.06 0 0 leadsigmaEoE #sigma_{E}/E Events leadsigmaEoE
 0 0 0 100 0 0.005 0.02 0 0 sigmaMoM #sigma_{M}/M Events sigmaMoM
 0 0 0 100 0 0 100 0 0 diphopT diphoton@pT Events dipho_pt
 0 0 1 100 0 0.01 0.04 0 0 subleadsieieEE #sigma_{i#etai#eta} Events subleadsieie

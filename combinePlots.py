@@ -21,7 +21,7 @@ pad2 = []
 singlePho = False
 normalizeToArea = True
 colors = (ROOT.myColorA3, ROOT.kMagenta, ROOT.kGreen, ROOT.kCyan, ROOT.kRed, ROOT.kOrange)
-lumi= 35.9
+lumi = 18.3
 # processedlumi= 36.5
 crosssection = 2008.33
 
@@ -131,7 +131,7 @@ for nc, v in enumerate(vars):
                         histos[-1][-1].SetFillColor(samples[s[0]][3])   
                         histos[-1][-1].SetLineColor(samples[s[0]][3])
                         if (not normalizeToArea):
-                            histos[-1][-1].Scale(lumi/36.5)
+                            histos[-1][-1].Scale(lumi/18.3)
                             #nentriesmc = histos[-1][-1].GetEntries()
                             #histos[-1][-1].Scale(crosssection*lumi/nentriesmc)
                         else:
