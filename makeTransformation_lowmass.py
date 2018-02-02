@@ -18,7 +18,7 @@ def test(makeOutput=False):
     trans = ""
     
     if (not makeOutput):
-        trans = ROOT.TFile("transformationShowershapes.root")
+        trans = ROOT.TFile("transformation_lowmass.root")
         for t in transfName:
             graphs.append(trans.Get(t))
         
@@ -229,7 +229,7 @@ def test(makeOutput=False):
         print "plotting done, press enter to continue"
         raw_input()
     else:
-        output = ROOT.TFile("inputHistos.root", "recreate")
+        output = ROOT.TFile("inputHistos_lowmass.root", "recreate")
         for i, h in enumerate(hmc):
             hmc[i].Scale(hdata[i].Integral()/hmc[i].Integral())
             h.Write()
@@ -241,7 +241,7 @@ def test(makeOutput=False):
 def makeTransformation():
     global hmc, hdata, transfName, plotNameData, plotNameMC, plotDef      
 
-    f = ROOT.TFile("inputHistos.root")
+    f = ROOT.TFile("inputHistos_lowmass.root")
     for p in plotNameData:
         hdata.append(f.Get(p))
 
@@ -283,11 +283,11 @@ def makeTransformation():
         graphs.append(ROOT.TGraph(len(xt), xt, xdatat))
         graphs[-1].SetName(transfName[z])
 
-    out = ROOT.TFile("transformationShowershapes.root", "recreate")
+    out = ROOT.TFile("transformation_lowmass.root", "recreate")
     for g in graphs:
         g.Write()
     out.Close()
-    print "wrote transformationShowershapes.root"
+    print "wrote transformation_lowmass.root"
 
 if (__name__ == "__main__"):
     parser = OptionParser(usage="Usage: %prog [options] [mc_ntuple_filename] [target_ntuple_filename]",)
