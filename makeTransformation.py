@@ -1,15 +1,17 @@
 import ROOT
 import array, sys
 from optparse import OptionParser
+ROOT.gROOT.SetBatch(True)
 
 hmcCorr = []
 hmc = []
 hdata = []
                 
-transfName   = ["transfEtaWidthEB", "transfEtaWidthEE", "transfS4EB", "transfS4EE", "transffull5x5R9EB", "transffull5x5R9EE",]
-plotNameData = ["hetaWidthdata_EB", "hetaWidthdata_EE", "hs4data_EB", "hs4data_EE", "hfull5x5r9data_EB", "hfull5x5r9data_EE"]
-plotNameMC   = ["hetaWidthmc_EB", "hetaWidthmc_EE", "hs4mc_EB", "hs4mc_EE", "hfull5x5r9mc_EB", "hfull5x5r9mc_EE"]
-plotDef      = [(1000, 0.000, 0.02), (1000, 0, 0.05), (1000, 0, 1), (1000, 0, 1), (1000, 0, 1), (1000, 0, 1)]
+transfName   = ["transfEtaWidthEB", "transfEtaWidthEE", "transfS4EB", "transfS4EE", "transffull5x5R9EB", "transffull5x5R9EE","transffull5x5sieieEB","transffull5x5sieieEE"]
+plotNameData = ["hetaWidthdata_EB", "hetaWidthdata_EE", "hs4data_EB", "hs4data_EE", "hfull5x5r9data_EB", "hfull5x5r9data_EE","hfull5x5sieiedata_EB","hfull5x5sieiedata_EE"]
+plotNameMC   = ["hetaWidthmc_EB", "hetaWidthmc_EE", "hs4mc_EB", "hs4mc_EE", "hfull5x5r9mc_EB", "hfull5x5r9mc_EE","hfull5x5sieiemc_EB","hfull5x5sieiemc_EE"]
+plotDef      = [(1000, 0.000, 0.02), (1000, 0.0, 0.05), (1000, 0., 1.), (1000, 0., 1.), (1000, 0., 1.), (1000, 0., 1.),(1000, 0.0, 0.02), (1000, 0.0, 0.04)]
+variables = ["eta width", "eta width", "S4 ratio", "S4 ratio", "full5x5 R9", "full5x5 R9", "full5x5 sieie", "full5x5 sieie"]
 
 def test(makeOutput=False):
     graphs = []
@@ -51,11 +53,13 @@ def test(makeOutput=False):
         s41 = array.array('f', [0])
         etawidth1 = array.array('f', [0])
         full5x5r91 = array.array('f', [0])
+        full5x5sieie1 = array.array('f', [0])
         et2 = array.array('f', [0])
         eta2 = array.array('f', [0])
         s42 = array.array('f', [0])
         etawidth2 = array.array('f', [0])
         full5x5r92 = array.array('f', [0])
+        full5x5sieie2 = array.array('f', [0])
         weight = array.array('f', [0])
         mass = array.array('f', [0])
 
@@ -65,11 +69,13 @@ def test(makeOutput=False):
         t.SetBranchStatus("leads4ratio", 1)
         t.SetBranchStatus("leadetawidth", 1)
         t.SetBranchStatus("leadfull5x5r9", 1)
+        t.SetBranchStatus("leadfull5x5sieie", 1)
         t.SetBranchStatus("subleadPt", 1)
         t.SetBranchStatus("subleadEta", 1)
         t.SetBranchStatus("subleads4ratio", 1)
         t.SetBranchStatus("subleadetawidth", 1)
         t.SetBranchStatus("subleadfull5x5r9", 1)
+        t.SetBranchStatus("subleadfull5x5sieie", 1)
         t.SetBranchStatus("weight", 1)
         t.SetBranchStatus("mass", 1)
 
@@ -78,11 +84,13 @@ def test(makeOutput=False):
         t.SetBranchAddress("leads4ratio", s41)
         t.SetBranchAddress("leadetawidth", etawidth1)
         t.SetBranchAddress("leadfull5x5r9", full5x5r91)
+        t.SetBranchAddress("leadfull5x5sieie", full5x5sieie1)
         t.SetBranchAddress("subleadPt", et2)
         t.SetBranchAddress("subleadEta", eta2)
         t.SetBranchAddress("subleads4ratio", s42)
         t.SetBranchAddress("subleadetawidth", etawidth2)
         t.SetBranchAddress("subleadfull5x5r9", full5x5r92)
+        t.SetBranchAddress("subleadfull5x5sieie", full5x5sieie2)
         t.SetBranchAddress("weight", weight)
         t.SetBranchAddress("mass", mass)
 
@@ -95,64 +103,76 @@ def test(makeOutput=False):
 
             t.GetEntry(z)
             
-            if (mass[0] < 75 or mass[0] > 105):
+            if (mass[0] < 70 or mass[0] > 110):
                 continue
                 
-            if (et1[0] > 15.):
+            if (et1[0] > 30.):
                 if (nf == 0):
-                    if (abs(eta1[0])<1.5):
+                    if (abs(eta1[0])<1.5 and full5x5r91[0]>0.5):
                         hmc[0].Fill(etawidth1[0], weight[0])
                         hmc[2].Fill(s41[0], weight[0])
                         hmc[4].Fill(full5x5r91[0], weight[0])
+                        hmc[6].Fill(full5x5sieie1[0], weight[0])
                         if (not makeOutput):
                             hmcCorr[0].Fill(graphs[0].Eval(etawidth1[0]), weight[0])
                             hmcCorr[2].Fill(graphs[2].Eval(s41[0]), weight[0])
                             hmcCorr[4].Fill(graphs[4].Eval(full5x5r91[0]), weight[0])
-                    else:
+                            hmcCorr[6].Fill(graphs[6].Eval(full5x5sieie1[0]), weight[0])
+                    elif (full5x5r91[0]>0.9):
                         hmc[1].Fill(etawidth1[0], weight[0])
                         hmc[3].Fill(s41[0], weight[0])
                         hmc[5].Fill(full5x5r91[0], weight[0])
+                        hmc[7].Fill(full5x5sieie1[0], weight[0])
                         if (not makeOutput):
                             hmcCorr[1].Fill(graphs[1].Eval(etawidth1[0]), weight[0])
                             hmcCorr[3].Fill(graphs[3].Eval(s41[0]), weight[0])
                             hmcCorr[5].Fill(graphs[5].Eval(full5x5r91[0]), weight[0])
+                            hmcCorr[7].Fill(graphs[7].Eval(full5x5sieie1[0]), weight[0])
                 else:
-                    if (abs(eta1[0])<1.5):
+                    if (abs(eta1[0])<1.5 and full5x5r91[0]>0.5):
                         hdata[0].Fill(etawidth1[0], weight[0])
                         hdata[2].Fill(s41[0], weight[0])
                         hdata[4].Fill(full5x5r91[0], weight[0])
-                    else:
+                        hdata[6].Fill(full5x5sieie1[0], weight[0])
+                    elif (full5x5r91[0]>0.9):
                         hdata[1].Fill(etawidth1[0], weight[0])
                         hdata[3].Fill(s41[0], weight[0])
                         hdata[5].Fill(full5x5r91[0], weight[0])
+                        hdata[7].Fill(full5x5sieie1[0], weight[0])
         
-            if (et2[0] > 15.):
+            if (et2[0] > 20.):
                 if (nf == 0):
-                    if (abs(eta2[0])<1.5):
+                    if (abs(eta2[0])<1.5 and full5x5r92[0]>0.5):
                         hmc[0].Fill(etawidth2[0], weight[0])
                         hmc[2].Fill(s42[0], weight[0])
                         hmc[4].Fill(full5x5r92[0], weight[0])
+                        hmc[6].Fill(full5x5sieie2[0], weight[0])
                         if (not makeOutput):
                             hmcCorr[0].Fill(graphs[0].Eval(etawidth2[0]), weight[0])
                             hmcCorr[2].Fill(graphs[2].Eval(s42[0]), weight[0])
                             hmcCorr[4].Fill(graphs[4].Eval(full5x5r92[0]), weight[0])
-                    else:
+                            hmcCorr[6].Fill(graphs[6].Eval(full5x5sieie2[0]), weight[0])
+                    elif (full5x5r92[0]>0.9):
                         hmc[1].Fill(etawidth2[0], weight[0])
                         hmc[3].Fill(s42[0], weight[0])
                         hmc[5].Fill(full5x5r92[0], weight[0])
+                        hmc[7].Fill(full5x5sieie2[0], weight[0])
                         if (not makeOutput):
                             hmcCorr[1].Fill(graphs[1].Eval(etawidth2[0]), weight[0])
                             hmcCorr[3].Fill(graphs[3].Eval(s42[0]), weight[0])
                             hmcCorr[5].Fill(graphs[5].Eval(full5x5r92[0]), weight[0])
+                            hmcCorr[7].Fill(graphs[7].Eval(full5x5sieie2[0]), weight[0])
                 else:
-                    if (abs(eta2[0])<1.5):
+                    if (abs(eta2[0])<1.5 and full5x5r92[0]>0.5):
                         hdata[0].Fill(etawidth2[0], weight[0])
                         hdata[2].Fill(s42[0], weight[0])
                         hdata[4].Fill(full5x5r92[0], weight[0])
-                    else:
+                        hdata[6].Fill(full5x5sieie2[0], weight[0])
+                    elif (full5x5r92[0]>0.9):
                         hdata[1].Fill(etawidth2[0], weight[0])
                         hdata[3].Fill(s42[0], weight[0])
                         hdata[5].Fill(full5x5r92[0], weight[0])
+                        hdata[7].Fill(full5x5sieie2[0], weight[0])
 
         print                
         # end of loop over tree entries
@@ -161,16 +181,46 @@ def test(makeOutput=False):
                 
     if (not makeOutput):
         c = []
+        leg = []
         for i in xrange(len(hmc)):
             c.append(ROOT.TCanvas("c"+str(i), ""))
+            c[-1].cd()
+
+            ROOT.gStyle.SetOptStat(0)
             hmc[i].Scale(hdata[i].Integral()/hmc[i].Integral())
             hmcCorr[i].Scale(hdata[i].Integral()/hmcCorr[i].Integral())
+            hmc[i].SetTitle("")
             hmc[i].Draw("HIST")
+            hmc[i].SetMinimum(0.0)
             hmc[i].SetLineColor(ROOT.kRed)
+            hmc[i].SetLineWidth(2)
+            hmc[i].GetXaxis().SetTitle(variables[i])
+            hmc[i].GetYaxis().SetTitle("Events")
             hmcCorr[i].Draw("SAMEHIST")
             hmcCorr[i].SetLineColor(ROOT.kBlue)
+            hmcCorr[i].SetLineWidth(2)
             hdata[i].Draw("SAMEPE")
             hdata[i].SetMarkerStyle(20)
+            hdata[i].SetMarkerSize(0.7)
+            hdata[i].SetMarkerColor(ROOT.kBlack)
+            
+            leg.append(ROOT.TLegend(.18,.65,.48, .86))
+            if (i==0 or i==2 or i==4 or i==6):
+                leg[-1].SetHeader("|eta|<1.479")
+            else:
+                leg[-1].SetHeader("|eta|>1.556")
+
+            leg[-1].SetName("leg"+str(i))
+            leg[-1].SetBorderSize(0)
+            leg[-1].AddEntry(hdata[i],"Data", "PE")
+            leg[-1].AddEntry(hmc[i],"UnCorr MC", "L")
+            leg[-1].AddEntry(hmcCorr[i],"Corr MC", "L")
+            leg[-1].Draw("SAME")
+
+            c[-1].Update()
+            c[-1].SaveAs(plotNames[i]+".root")
+            c[-1].SaveAs(plotNames[i]+".png")
+            c[-1].SaveAs(plotNames[i]+".pdf")
 
         print "plotting done, press enter to continue"
         raw_input()
