@@ -1,0 +1,5 @@
+0 1
+1 abs(probe_Pho_eta)<1.4442
+1 (abs(probe_Pho_eta)>1.566&&abs(probe_Pho_eta)<2.5)
+2 abs(tag_Pho_eta)<1.4442
+2 (abs(tag_Pho_eta)>1.566&&abs(tag_Pho_eta)<2.5)

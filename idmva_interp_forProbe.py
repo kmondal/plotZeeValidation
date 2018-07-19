@@ -264,8 +264,8 @@ mc_bottom = []
 #             "pho2_phoidMva_EB_nvtxlt15_cat0", "pho2_phoidMva_EE_nvtxlt15_cat0"]
 
 
-prefixes_data = ["idmva1_cat0_SingleElectron", "idmva2_cat0_SingleElectron"]
-prefixes_mc   = ["idmva1_cat0_DYToEE", "idmva2_cat0_DYToEE"]
+prefixes_data = ["idmva2_cat0_SingleElectron"]
+prefixes_mc   = ["idmva2_cat0_DYToEE"]
 
 
 fData.cd()
@@ -307,7 +307,7 @@ pad1.Draw()
 pad1.cd()
 plotDataMC(0, data, mc, mc_top, mc_bottom, False, True, xaxis, True, True)
 pad1.GetPrimitive(data[-1].GetName()).SetLabelSize(0)
-pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 2100.) #gouranga
+pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 1250.) #gouranga
 pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetLabelSize(0.035)
 pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetTitleOffset(1.2)
 pad1.GetPrimitive(data[-1].GetName()).GetXaxis().SetTitleSize(0)
@@ -320,7 +320,7 @@ txt1[-1].SetTextSize(0.05)
 if (options.TeV == 8):
     txt2.DrawLatex(0.09, 0.91, "#scale[0.5]{#times10^{3}}")
     txt1[-1].DrawLatex(0.13, 0.93, "#bf{CMS} #it{Preliminary}")
-    txt1[-1].DrawLatex(0.55, 0.93, "41.5 fb^{-1} (13 TeV)")
+    txt1[-1].DrawLatex(0.55, 0.93, "41.4 fb^{-1} (13 TeV)")
 else:
     txt1[-1].DrawLatex(0.15, 0.93, "#scale[0.8]{CMS #sqrt{s}=7 TeV; L=5.1 fb^{-1}}")
 txt1[-1].Draw()
@@ -360,8 +360,8 @@ mc_bottom = []
 #prefixes  = ["pho1_phoidMva_EB_nvtxgt15_cat0", "pho1_phoidMva_EB_nvtxgt15_cat0",
 #             "pho2_phoidMva_EE_nvtxgt15_cat0","pho2_phoidMva_EE_nvtxgt15_cat0"]
 
-prefixes_data = ["idmva1_cat1_SingleElectron", "idmva2_cat1_SingleElectron"]
-prefixes_mc   = ["idmva1_cat1_DYToEE", "idmva2_cat1_DYToEE"]
+prefixes_data = ["idmva2_cat1_SingleElectron"]
+prefixes_mc   = ["idmva2_cat1_DYToEE"]
 #prefixes  = ["idmva_nom_EE"]
 
 fData.cd()
@@ -400,7 +400,7 @@ pad3.Draw()
 pad3.cd()
 plotDataMC(0, data, mc, mc_top, mc_bottom, False, True, xaxis, True, True)
 pad3.GetPrimitive(data[-1].GetName()).SetLabelSize(0)
-pad3.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 260.0)#gouranga
+pad3.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 125.0)#gouranga
 pad3.GetPrimitive(data[-1].GetName()).GetYaxis().SetTitleOffset(1.2)
 pad3.RedrawAxis()
 txt1.append(ROOT.TLatex())
@@ -411,7 +411,7 @@ txt1[-1].SetTextSize(0.05)
 if (options.TeV == 8):
     txt2.DrawLatex(0.09, 0.91, "#scale[0.5]{#times10^{3}}")
     txt1[-1].DrawLatex(0.13, 0.93, "#bf{CMS} #it{Preliminary}")
-    txt1[-1].DrawLatex(0.55, 0.93, "41.5 fb^{-1} (13 TeV)")
+    txt1[-1].DrawLatex(0.55, 0.93, "41.4 fb^{-1} (13 TeV)")
 else:
     txt1[-1].DrawLatex(0.15, 0.93, "#scale[0.8]{6.2 fb^{-1} (13TeV)}")
 txt1[-1].Draw()
@@ -446,8 +446,8 @@ if (options.TeV == 7):
     c_single.SaveAs("idmva_nvtx_7TeV.pdf")
     c_single.SaveAs("idmva_nvtx_7TeV.root")
 else:
-    c_single.SaveAs("idmva_syst.pdf")
-    c_single.SaveAs("idmva_syst.png")
+    c_single.SaveAs("idmva_forProbe_syst.pdf")
+    c_single.SaveAs("idmva_forProbe_syst.png")
     #c_single.SaveAs("idmva_syst.root")
 
 

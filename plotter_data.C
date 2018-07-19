@@ -237,8 +237,8 @@ void plotter_data(const char* datafilename, const char* mcfilename, const char *
 	std::cout << z << std::endl;
       
       chain->GetEntry(z);
-      float mass = branchesF["mass"];
-      if ((mass > 70 && mass < 110) && (branchesF["subIDMVA"]>-0.9 && branchesF["leadIDMVA"]>-0.9) && (branchesF["leadPt"]>35.)) {
+      // float mass = branchesF["mass"];
+      if (( branchesF["mass"] > 70 &&  branchesF["mass"] < 110) && (branchesF["subIDMVA"]>-0.9 && branchesF["leadIDMVA"]>-0.9) && (branchesF["leadPt"]>35. && branchesF["subleadPt"]>22.)) {
 	
 	float weight = 1; 
 	if (sampletype == 1) {
@@ -299,13 +299,13 @@ void plotter_data(const char* datafilename, const char* mcfilename, const char *
       }
       //std::cout << "Debug level 9" << std::endl;
       if(sampletype==1 && z>=0) break ;
-      //if(sampletype==0 && z>=10000) break ;      
+      // if(sampletype==0 && z>=10000) break ;      
     }
     
     std::cout << sampletype << std::endl;
-    std::string rootOutputFile = "out_data.root";  
+    std::string rootOutputFile = "out_data_2017.root";  
     if (sampletype == 1)
-      rootOutputFile = "out_zee_tmp.root";
+      rootOutputFile = "out_tmp.root";
     
     TFile* out = new TFile(rootOutputFile.c_str(), "recreate");
     
@@ -324,7 +324,7 @@ void plotter_data(const char* datafilename, const char* mcfilename, const char *
 void runAllPlotter()
 
 {
-  plotter_data("/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/October2017_v1/October03/output_data_2017.root","/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/October2017_v1/October03/output_DYJets.root");
+  plotter_data("/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/April2018_v1/ReReco2017/ZeeOptTree_wcorr/output_SingleElectron_OptTreeDumper_Rereco2017.root","/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/April2018_v1/ReReco2017/ZeeOptTree_wcorr/output_DYJetsToLL_OptTreeDumper_Rereco2017_wcorr.root","transformationIDMVA_v2.root");
 
   //  plotter_mc("/hadoop/cms/store/user/gkole/Hgg/Moriond17/ZeeMoriond2017_DYToEE_DYToLL_correctPreSel/output_data_single_v2.root","/hadoop/cms/store/user/gkole/Hgg/Moriond17/ZeeMoriond2017_DYToEE_DYToLL_correctPreSel/output_DYJetsToLL_v2.root");
 
