@@ -12,13 +12,15 @@ templates = (
     #'bdtout_{R9t}R9{syst}_cat{cat4}_DYJetsToLL',
     #'bdtout{syst}{vtxbin}_cat0_DYJetsToLL',
     #'idmva{syst}{pho}_cat{cat01}_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8',
-    'idmva{syst}{pho}_cat{cat01}_DYToEE',
     #'sigmaEoE{syst}{pho}_cat{cat01}_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8',
-    'sigmaEoE{syst}{pho}_cat{cat01}_DYToEE',
-#    'idmva_{syst}_EE',
-#    'sigma_{syst}_EB',
-#    'sigma_{syst}_EE'
-    )
+    #    'sigmaEoE{syst}{pho}_cat{cat01}_DYToEE',
+    #    'idmva_{syst}_EE',
+    #    'sigma_{syst}_EB',
+    #    'sigma_{syst}_EE'
+
+    'idmva{syst}{pho}_cat{cat01}_DYToEE',
+    # 'idmva{syst}2_cat{cat01}_DYToEE',
+   )
 
 # 'syst' is a special variation and should correspond to the things to be morphed: nominal, plus, minus
 variations = {

@@ -136,12 +136,12 @@ def plotRatio(cat, data, mc, mc_top, mc_bottom, passMVAcut, equalArea):
     ratio[-1].Draw("e")
     ratio[-1].GetYaxis().SetRangeUser(0.1, 1.9)
     ratio_graphs.append(ROOT.TGraphAsymmErrors(len(x), x, y, exd, exu, eyd, eyu))
-    ratio_graphs[-1].SetFillColor(ROOT.myColorB5) #gouranga
-    ratio_graphs[-1].SetFillStyle(3001)
-    ratio_graphs[-1].SetLineColor(ROOT.myColorB3tr)
+    ratio_graphs[-1].SetFillColor(ROOT.kRed) #gouranga
+    ratio_graphs[-1].SetFillStyle(3004)
+    ratio_graphs[-1].SetLineColor(ROOT.kRed)
     ratio_graphs[-1].Draw("e2,same")
-    ratio_syst_up[-1].SetLineColor(ROOT.myColorB2)
-    ratio_syst_down[-1].SetLineColor(2)
+    ratio_syst_up[-1].SetLineColor(ROOT.kRed)
+    ratio_syst_down[-1].SetLineColor(ROOT.kRed)
     ratio_syst_up[-1].Draw("hist,same")
     ratio_syst_down[-1].Draw("hist,same")
     ratio[-1].SetMarkerSize(0.5)
@@ -159,8 +159,10 @@ def plotDataMC(cat, data, mc, mc_top, mc_bottom, passMVAcut, equalArea, xaxis, n
 
     mc_temp.append(mc[cat].Clone())
     hist_syst.append(mc[cat].Clone())
-    mc_temp[-1].SetFillColor(ROOT.myColorA3)
-    mc_temp[-1].SetLineColor(ROOT.myColorA2)
+    #mc_temp[-1].SetFillColor(ROOT.myColorA3)
+    #mc_temp[-1].SetLineColor(ROOT.myColorA2)
+    mc_temp[-1].SetFillColor(ROOT.kBlue-9)
+    mc_temp[-1].SetLineColor(ROOT.kBlue-9)
     #hist_syst.append(mc_bottom[cat].Clone())
     #hist_syst[-1].Add(mc_top[cat].Clone())
     #hist_syst[-1].Scale(0.5)
@@ -241,12 +243,13 @@ def plotDataMC(cat, data, mc, mc_top, mc_bottom, passMVAcut, equalArea, xaxis, n
     
     data[cat].GetYaxis().SetTitle("Events/0.02")
     mc_temp[-1].Draw("hist,same")
-    graphs[-1].SetFillColor(ROOT.myColorB5) #gouranga
-    graphs[-1].SetFillStyle(3001)
+    graphs[-1].SetFillColor(ROOT.kRed) #gouranga
+    #graphs[-1].SetFillColor(ROOT.kRed) #gouranga
+    graphs[-1].SetFillStyle(3004)
     graphs[-1].Draw("e2,same")
     hist_syst_up[-1].SetLineColor(ROOT.kRed)
     #hist_syst_up[-1].SetFillColor(5) # gouranga
-    hist_syst_down[-1].SetLineColor(2)
+    hist_syst_down[-1].SetLineColor(ROOT.kRed)
     hist_syst_up[-1].Draw("hist,same")
     hist_syst_down[-1].Draw("hist,same")
     data[cat].Draw("pe,same")
@@ -294,23 +297,26 @@ for i, prefix in enumerate(prefixes_mc):
         mc_top[-1].Add(fMC.Get(prefix+"_top"))
         mc_bottom[-1].Add(fMC.Get(prefix+"_bottom"))
 
-xaxis = ["Photon ID BDT score"]
+xaxis = ["Photon Identification BDT value"]
 c_single = ROOT.TCanvas("c_single","BDT output",900,800)
 r = 0.26
 epsilon = 0.14;
 pad1 = ROOT.TPad("pad1", "pad1", 0.05, r-epsilon, .95, 1.)
-#pad1.SetBorderSize(1)
-#pad1.SetBorderMode(1)
+#pad1 = ROOT.TPad("pad1", "pad1", 0.05, 0, .95, 1.)
+pad1.SetBorderSize(1)
+pad1.SetBorderMode(1)
 pad1.SetBottomMargin(epsilon)
 c_single.cd()
 pad1.Draw()
 pad1.cd()
 plotDataMC(0, data, mc, mc_top, mc_bottom, False, True, xaxis, True, True)
 pad1.GetPrimitive(data[-1].GetName()).SetLabelSize(0)
-pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 620.) #gouranga
+pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetRangeUser(0, 2350.) #gouranga
+#pad1.GetPrimitive(data[-1].GetName()).GetXaxis().SetLabelSize(0.035)
 pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetLabelSize(0.035)
-pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetTitleOffset(1.1)
-pad1.GetPrimitive(data[-1].GetName()).GetXaxis().SetTitleSize(0)
+#pad1.GetPrimitive(data[-1].GetName()).GetXaxis().SetTitleOffset(1.2)
+pad1.GetPrimitive(data[-1].GetName()).GetYaxis().SetTitleOffset(1.3)
+#pad1.GetPrimitive(data[-1].GetName()).GetXaxis().SetTitleSize(0.04)
 pad1.RedrawAxis()
 txt1.append(ROOT.TLatex())
 txt1[-1].SetNDC()
@@ -318,9 +324,9 @@ txt2 = txt1[-1]
 txt1[-1].SetTextSize(0.05)
 #txt1[-1].SetTextAlign(12)
 if (options.TeV == 8):
-    txt2.DrawLatex(0.09, 0.92, "#scale[0.5]{#times10^{3}}")
-    txt1[-1].DrawLatex(0.135, 0.93, "#bf{CMS} #it{Preliminary}")
-    txt1[-1].DrawLatex(0.6, 0.93, "12.9 fb^{-1} (13 TeV)")
+    txt2.DrawLatex(0.08, 0.9, "#scale[0.6]{#times10^{3}}")
+    txt1[-1].DrawLatex(0.135, 0.93, "#bf{CMS}")
+    txt1[-1].DrawLatex(0.6, 0.93, "41.5 fb^{-1} (13 TeV)")
 else:
     txt1[-1].DrawLatex(0.15, 0.93, "#scale[0.8]{CMS #sqrt{s}=7 TeV; L=5.1 fb^{-1}}")
 txt1[-1].Draw()
@@ -447,8 +453,8 @@ if (options.TeV == 7):
     c_single.SaveAs("idmva_nvtx_7TeV.pdf")
     c_single.SaveAs("idmva_nvtx_7TeV.root")
 else:
-    c_single.SaveAs("idmva_syst.pdf")
-    c_single.SaveAs("idmva_syst.png")
+    c_single.SaveAs("idmva_syst_paper.pdf")
+    c_single.SaveAs("idmva_syst_paper.png")
     #c_single.SaveAs("idmva_syst.root")
 
 

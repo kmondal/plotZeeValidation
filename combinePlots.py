@@ -21,7 +21,7 @@ pad2 = []
 singlePho = False
 normalizeToArea = True
 colors = (ROOT.myColorA3, ROOT.kMagenta, ROOT.kGreen, ROOT.kCyan, ROOT.kRed, ROOT.kOrange)
-lumi = 18.3
+lumi = 41.5
 # processedlumi= 36.5
 crosssection = 2008.33
 
@@ -56,6 +56,7 @@ sorted_samples = sorted(samples.items(), key=operator.itemgetter(1))
 
 categories = {}
 f1 = open("categories.dat")
+# f1 = open("probeCategories.dat")
 lines = f1.readlines()
 f1.close()
 for l in lines:
@@ -68,8 +69,9 @@ for l in lines:
         categories[int(items[0])] += 1
 
 vars = {}
-#f1 = open("plotvariables.dat")
+# f1 = open("plotvariables.dat")
 f1 = open("plotvariables_AN.dat")
+# f1 = open("probesvar.dat")
 #f1 = open("sigmaEoE.dat")
 lines = f1.readlines()
 f1.close()
@@ -230,7 +232,7 @@ for nc, v in enumerate(vars):
         ratio[-1].SetMarkerSize(0.7)
         ratio[-1].SetTitle("")
 
-        ratio[-1].GetYaxis().SetRangeUser(0.5, 1.5)
+        ratio[-1].GetYaxis().SetRangeUser(0.0, 2.0) 
         ratio[-1].GetYaxis().SetLabelSize(0.06)
         ratio[-1].GetYaxis().SetTitleSize(0.1)
         ratio[-1].GetYaxis().SetTitleOffset(0.45)

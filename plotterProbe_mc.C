@@ -188,7 +188,7 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
     
     std::map<int, std::vector<TTreeFormula*> > categories;
     std::cout << "Reading categories...." << std::endl;
-    myReadFile.open("categories.dat");
+    myReadFile.open("probeCategories.dat");
     std::string line;
     int cat;
     while(!myReadFile.eof()) {
@@ -245,15 +245,16 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
 	std::cout << z << std::endl;
       
       chain->GetEntry(z);
+      
       float mass = branchesF["mass"];
-      if ((mass > 70 && mass < 110) && branchesI["passingPresel"] == 1 && (branchesF["tag_Pho_mva"]>-0.9 && branchesF["probe_Pho_mva"]>-0.9)) {
-	// cout << "mass: " << mass << " - " << "tag_Pho_mva" << branchesF["tag_Pho_mva"] << " - " << "probe_Pho_mva" << branchesF["probe_Pho_mva"] << endl;
-
+      if ((mass > 70 && mass < 110) && ((abs(branchesF["probe_sc_eta"]) < 1.5 && branchesF["probe_Pho_sieie"] < 0.0105) || (abs(branchesF["probe_sc_eta"]) > 1.5 && branchesF["probe_Pho_sieie"] < 0.028))) {
 	double weight = 1.0; 
 	if (sampletype == 1 && isfinite(branchesF["totWeight"])) {
 	  weight = branchesF["totWeight"];
 	  // std::cout << "weight in the loop: " << weight << "and:  " << branchesD["totWeight"] << std::endl; 
-        }  
+	}  
+	// cout << "mass: " << mass << " - " << "tag_Pho_mva" << branchesF["tag_Pho_mva"] << " - " << "probe_Pho_mva" << branchesF["probe_Pho_mva"] << endl;
+	
 	for (unsigned int s=0; s<samples.size(); s++) {
 	  for (unsigned int h=0; h<histoDef.size(); h++) {
 	    // std::cout << histoDef[h].name << " " << histoDef[h].var << " " << histoDef[h].ncat << std::endl;
@@ -309,12 +310,13 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
       }
       // std::cout << "Debug level 9" << std::endl;
       if(sampletype==0 && z>=0) break ;
+      // if(sampletype==1 && z>=10000) break ;
     }
     
     std::cout << sampletype << std::endl;
-    std::string rootOutputFile = "out_tmp.root";  
+    std::string rootOutputFile = "tnp_tmp.root";  
     if (sampletype == 1)
-      rootOutputFile = "out_zee.root";
+      rootOutputFile = "tnp_zee_wcorr.root";
     
     TFile* out = new TFile(rootOutputFile.c_str(), "recreate");
     
@@ -333,5 +335,5 @@ void plotter(const char* datafilename, const char* mcfilename, const char *idmva
 
 void runAllPlotter()
 {
-  plotter("/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/January2018_v1/Legacy2016/ZeeTnP_wocor/output_SingleEle_legacy2016.root","/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/January2018_v1/Legacy2016/ZeeTnP_wocor/output_DYJetsToLL_legacy2016.root","transformationIDMVA_v2.root");
+  plotter("/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/April2018_v1/ReReco2017/ZeeTnP_wcor/output_SingleElectron_Rereco2017.root","/eos/user/k/kmondal/public/FLASHgg/ZeeValidation/April2018_v1/ReReco2017/ZeeTnP_wcor/output_DYJetsToLL_Rereco2017_wcorr.root","transformationIDMVA_v2.root");
 }
